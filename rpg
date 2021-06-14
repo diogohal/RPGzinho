@@ -1,0 +1,1855 @@
+import random
+import time
+from pygame import mixer
+#=========CONTROLE DE CORES=========
+cores = {'limpa':'\033[m',
+         'cor_esc':'\033[33m',
+         'cor_ataque': '\033[1;4;31m',
+         'cor_vidatotal':'\033[32m',
+         'cor_vidaOp':'\033[31m',
+         'cor_pocoes':'\033[35m',
+         'cor_fala':'\033[1m'}
+# Tela inicial e escolha da classe
+mixer.init()
+mixer.music.load('músicas rpg/música início.mp3')
+mixer.music.set_volume(0.2)
+mixer.music.play(-1)
+print('---' * 20)
+print('BEM VINDO AO MUNDO DE URIS')
+print('---' * 20)
+nome = str(input('Primeiramente, digite o nome do personagem: ')).strip()
+print('---' * 20)
+print('{}1) Bárbaro (+2 de força)\n2) Ladino (+2 de destreza)\n3) Arqueiro (+2 de '
+      'ataque a longa distância)'.format(cores['cor_esc']))
+classe = int(input('Digite o número da classe que deseja jogar: {}'.format(cores['limpa'])))
+print('---' * 20)
+vidatotal = 15 #VIDA DA PERSONAGEM
+if classe == 1:
+    classe = 'Bárbaro'
+    forca = 2
+    destreza = 0
+    longaD = 0
+    print('Você escolheu a classe {} e ganha +2 de força. {}Vida total: '
+          '{}{}'.format(classe, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+if classe == 2:
+    classe = 'Ladino'
+    forca = 0
+    destreza = 2
+    longaD = 0
+    print('Você escolheu a classe {} e ganha +2 de destreza. {}Vida total: '
+          '{}{}'.format(classe, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+if classe == 3:
+    classe = 'Arqueiro'
+    forca = 0
+    destreza = 0
+    longaD = 2
+    print('Você escolheu a classe {} e ganha +2 de dano a longa distância. {}Vida total: '
+          '{}{}'.format(classe, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+print('Você recebe {}5 poções de cura{}. Use-as com sabedoria.'.format(cores['cor_pocoes'], cores['limpa']))
+pocoes = 5
+print('---' * 20)
+# Início do jogo
+print('Aguarde o jogo iniciar.')
+time.sleep(5)
+print('---' * 20)
+print('Você está em uma taverna e, ao seu lado, um mago de cabelos brancos e '
+      'barba grisalha se encontra. Ao fundo, \num bardo toca no alaúde. O que '
+      'deseja fazer?')
+# Escolha da primeira ação
+print('{}1) Pedir uma bebida ao garçom\n2) Conversar com o mago\n3) Sair da taverna'.format(cores['cor_esc']))
+esc1 = int(input('Escolha a opção: {}'.format(cores['limpa'])))
+if esc1 == 1:
+    print('O garçom te traz uma dose de whisky e você bebe. O mago aborda-o.')
+    time.sleep(3)
+if esc1 == 2:
+    print('{}{}: Olá, mago.{}'.format(cores['cor_fala'], nome.upper(), cores['limpa']))
+    time.sleep(2)
+if esc1 == 3:
+    print('Você sai da taverna e, ao olhar para trás, percebe que o mago está seguindo-o.')
+    time.sleep(3)
+print('{}MAGO: {}, estou a sua procura. A princesa foi raptada e tu és o escolhido '
+            'para trazê-la de volta.{}'.format(cores['cor_fala'], nome, cores['limpa']))
+time.sleep(3)
+print('{}MAGO: Para isso, você deve cumprir 3 desafios: matar gobblins na floresta ao lado, '
+      'resolver o enigma do ancião\ne cortar a cabeça do minotauro. Qual deseja fazer primeiro?{}'
+      .format(cores['cor_fala'], cores['limpa']))
+time.sleep(3)
+print('---' * 20)
+# Escolha da segunda opção
+caminhoGobblins = 0
+caminhoAnciao = 0
+caminhoMinotauro = 0
+tarefasCompletas = 0
+while (tarefasCompletas < 3):
+    print('Escolha a próxima tarefa:')
+    print('{}1) Gobblins\n2) Enigma\n3) Minotauro'.format(cores['cor_esc']))
+    esc2 = int(input('Escolha a opção: {}'.format(cores['limpa'])))
+    #CAMINHO DOS GOBBLINS
+    if esc2 == 1:
+        if caminhoGobblins == 0:
+            #===========CONTROLE DE MÚSICA============
+            mixer.music.stop()
+            mixer.music.load('músicas rpg/caminho1.mp3')
+            mixer.music.set_volume(0.4)
+            mixer.music.play(-1)
+            #INTRODUÇÃO
+            print('---' * 20)
+            print('Muito bem. Que comece a aventura dos Gobblins!')
+            time.sleep(3)
+            print('---' * 20)
+            print('Você caminha por uma floresta aparentemente calma, o dia está ensolarado e os '
+                  'pássaros cantam tranquilos. \nPor um momento, os barulhos dos animais param e, em sua'
+                  ' frente, três Gobblins o surpreende. O que você faz?')
+            # VIDA DOS GOBBLINS
+            vidaG1 = 10
+            vidaG2 = 10
+            vidaG3 = 10
+            time.sleep(4)
+            # AÇÃO
+            gmortos = 0
+            while (gmortos < 3):
+                # ESCOLHA DE QUAL GOBBLIN ATACAR
+                if vidatotal > 0:
+                    print('{}1) Atacar o Gobblin 1\n2) Atacar o Gobblin 2\n3) Atacar o Gobblin 3\n4) '
+                          'Poção de cura (1d6 de vida). {}Poções restantes: {}'
+                          .format(cores['cor_esc'], cores['cor_pocoes'], pocoes))
+                    esc3 = int(input('{}Digite o número da jogada desejada: {}'
+                                     .format(cores['cor_esc'], cores['limpa'])))
+                    # =================GOBBLIN 1========================
+                    if esc3 == 1:
+                        if vidaG1 > 0:
+                            d6 = random.randint(1, 6)
+                            print('---' * 20)
+                            # ESCOLHA DE QUAL ARMA UTILIZAR
+                            print('Você quer atacar com:\n{}1) Espada (1d6 + força)\n2) Adaga (1d6 + destreza'
+                                  ')\n3) Arco (1d6 + longa distância)'.format(cores['cor_esc']))
+                            escAtaque = int(input('Digite o número da arma desejada: {}'.format(cores['limpa'])))
+                            print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                            time.sleep(3)
+                            if escAtaque == 1:
+                                dano = d6 + forca
+                                vidaG1 = vidaG1 - dano
+                                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                                time.sleep(2)
+                                print('Você usou sua espada contra o Gobblin 1, causando {} + {} de dano contra o '
+                                      'adversário. {}Vida do oponente: {}{}'.format(d6, forca, cores['cor_vidaOp'], vidaG1,cores['limpa']))
+                                if vidaG1 <= 0:
+                                    time.sleep(2)
+                                    print('Você matou o Gobblin 1!')
+                                    time.sleep(3)
+                                    print('---' * 20)
+                                    gmortos = gmortos + 1
+                            if escAtaque == 2:
+                                dano = d6 + destreza
+                                vidaG1 = vidaG1 - dano
+                                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                                time.sleep(2)
+                                print('Você usou sua adaga contra o Gobblin 1, causando {} + {} de dano contra o '
+                                      'adversário. {}Vida do oponente: {}{}'
+                                      .format(d6, destreza, cores['cor_vidaOp'], vidaG1, cores['limpa']))
+                                if vidaG1 <= 0:
+                                    time.sleep(2)
+                                    print('Você matou o Gobblin 1!')
+                                    time.sleep(3)
+                                    print('---' * 20)
+                                    gmortos = gmortos + 1
+                            if escAtaque == 3:
+                                dano = d6 + longaD
+                                vidaG1 = vidaG1 - dano
+                                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                                time.sleep(2)
+                                print('Você usou seu arco contra o Gobblin 1, causando {} + {} de dano contra o '
+                                      'adversário. {}Vida do oponente: {}{}'
+                                      .format(d6, longaD, cores['cor_vidaOp'], vidaG1, cores['limpa']))
+                                if vidaG1 <= 0:
+                                    time.sleep(2)
+                                    print('Você matou o Gobblin 1!')
+                                    time.sleep(3)
+                                    print('---' * 20)
+                                    gmortos = gmortos + 1
+                            time.sleep(3)
+                            # CONTRA-ATAQUE DO ADVERSÁRIO
+                            if vidaG1 > 0:
+                                print('---' * 20)
+                                print('Agora é a vez do contra-ataque do Gobblin 1!')
+                                time.sleep(3)
+                                print('{}GOBBLIN ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                                time.sleep(3)
+                                d4 = random.randint(1, 4)
+                                vidatotal = vidatotal - d4
+                                print('O Gobblin rolou 1d4 e tirou {}.'.format(d4))
+                                time.sleep(2)
+                                print('Você tomou {} de dano! {}Vida restante: {}{}'
+                                      .format(d4, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+                                time.sleep(3)
+                                print('---' * 20)
+                        else:
+                            print('O Gobblin 1 já está morto.')
+                            time.sleep(3)
+                            print('---' * 20)
+                    # =================GOBBLIN 2========================
+                    if esc3 == 2:
+                        if vidaG2 > 0:
+                            d6 = random.randint(1, 6)
+                            print('---' * 20)
+                            # ESCOLHA DE QUAL ARMA UTILIZAR
+                            print('Você quer atacar com:\n{}1) Espada (1d6 + força)\n2) Adaga (1d6 + destreza'
+                                  ')\n3) Arco (1d6 + longa distância)'.format(cores['cor_esc']))
+                            escAtaque = int(input('Digite o número da arma desejada: {}'.format(cores['limpa'])))
+                            print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                            time.sleep(3)
+                            if escAtaque == 1:
+                                dano = d6 + forca
+                                vidaG2 = vidaG2 - dano
+                                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                                time.sleep(2)
+                                print('Você usou sua espada contra o Gobblin 2, causando {} + {} de dano contra o '
+                                      'adversário. {}Vida do oponente: {}{}'
+                                      .format(d6, forca, cores['cor_vidaOp'], vidaG2, cores['limpa']))
+                                if vidaG2 <= 0:
+                                    time.sleep(2)
+                                    print('Você matou o Gobblin 2!')
+                                    time.sleep(3)
+                                    print('---' * 20)
+                                    gmortos = gmortos + 1
+                            if escAtaque == 2:
+                                dano = d6 + destreza
+                                vidaG2 = vidaG2 - dano
+                                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                                time.sleep(2)
+                                print('Você usou sua adaga contra o Gobblin 2, causando {} + {} de dano contra o '
+                                      'adversário. {}Vida do oponente: {}{}'
+                                      .format(d6, destreza, cores['cor_vidaOp'], vidaG2, cores['limpa']))
+                                if vidaG2 <= 0:
+                                    time.sleep(2)
+                                    print('Você matou o Gobblin 2!')
+                                    time.sleep(3)
+                                    print('---' * 20)
+                                    gmortos = gmortos + 1
+                            if escAtaque == 3:
+                                dano = d6 + longaD
+                                vidaG2 = vidaG2 - dano
+                                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                                time.sleep(2)
+                                print('Você usou seu arco contra o Gobblin 2, causando {} + {} de dano contra o '
+                                      'adversário. {}Vida do oponente: {}{}'
+                                      .format(d6, longaD, cores['cor_vidaOp'], vidaG2, cores['limpa']))
+                                if vidaG2 <= 0:
+                                    time.sleep(2)
+                                    print('Você matou o Gobblin 2!')
+                                    time.sleep(3)
+                                    print('---' * 20)
+                                    gmortos = gmortos + 1
+                            time.sleep(3)
+                            # CONTRA-ATAQUE DO ADVERSÁRIO
+                            if vidaG2 > 0:
+                                print('---' * 20)
+                                print('Agora é a vez do contra-ataque do Gobblin 2!')
+                                time.sleep(3)
+                                print('{}GOBBLIN ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                                time.sleep(3)
+                                d4 = random.randint(1, 4)
+                                vidatotal = vidatotal - d4
+                                print('O Gobblin rolou 1d4 e tirou {}.'.format(d4))
+                                time.sleep(2)
+                                print('Você tomou {} de dano! {}Vida restante: {}{}'
+                                      .format(d4, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+                                time.sleep(3)
+                                print('---' * 20)
+                        else:
+                            print('O Gobblin 2 já está morto.')
+                            time.sleep(3)
+                            print('---' * 20)
+                    # ================GOBBLIN 3========================
+                    if esc3 == 3:
+                        if vidaG3 > 0:
+                            d6 = random.randint(1, 6)
+                            print('---' * 20)
+                            # ESCOLHA DE QUAL ARMA UTILIZAR
+                            print('Você quer atacar com:\n{}1) Espada (1d6 + força)\n2) Adaga '
+                                  '(1d6 + destreza)\n3) Arco (1d6 + longa distância)'.format(cores['cor_esc']))
+                            escAtaque = int(input('Digite o número da arma desejada: {}'.format(cores['limpa'])))
+                            print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                            time.sleep(3)
+                            if escAtaque == 1:
+                                dano = d6 + forca
+                                vidaG3 = vidaG3 - dano
+                                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                                time.sleep(2)
+                                print('Você usou sua espada contra o Gobblin 3, causando {} + {} de dano contra o '
+                                      'adversário. {}Vida do oponente: {}{}'
+                                      .format(d6, forca, cores['cor_vidaOp'],vidaG3, cores['limpa']))
+                                if vidaG3 <= 0:
+                                    time.sleep(2)
+                                    print('Você matou o Gobblin 3!')
+                                    time.sleep(3)
+                                    print('---' * 20)
+                                    gmortos = gmortos + 1
+                            if escAtaque == 2:
+                                dano = d6 + destreza
+                                vidaG3 = vidaG3 - dano
+                                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                                time.sleep(2)
+                                print('Você usou sua adaga contra o Gobblin 3, causando {} + {} de dano contra o '
+                                      'adversário. {}Vida do oponente: {}{}'
+                                      .format(d6, destreza, cores['cor_vidaOp'],vidaG3, cores['limpa']))
+                                if vidaG3 <= 0:
+                                    time.sleep(2)
+                                    print('Você matou o Gobblin 3!')
+                                    time.sleep(3)
+                                    print('---' * 20)
+                                    gmortos = gmortos + 1
+                            if escAtaque == 3:
+                                dano = d6 + longaD
+                                vidaG3 = vidaG3 - dano
+                                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                                time.sleep(2)
+                                print('Você usou seu arco contra o Gobblin 3, causando {} + {} de dano contra o '
+                                      'adversário. {}Vida do oponente: {}{}'
+                                      .format(d6, longaD, cores['cor_vidaOp'],vidaG3, cores['limpa']))
+                                if vidaG3 <= 0:
+                                    time.sleep(2)
+                                    print('Você matou o Gobblin 3!')
+                                    time.sleep(3)
+                                    print('---' * 20)
+                                    gmortos = gmortos + 1
+                            time.sleep(3)
+                            # CONTRA-ATAQUE DO ADVERSÁRIO
+                            if vidaG3 > 0:
+                                print('---' * 20)
+                                print('Agora é a vez do contra-ataque do Gobblin 3!')
+                                time.sleep(3)
+                                print('{}GOBBLIN ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                                time.sleep(3)
+                                d4 = random.randint(1, 4)
+                                vidatotal = vidatotal - d4
+                                print('O Gobblin rolou 1d4 e tirou {}.'.format(d4))
+                                time.sleep(2)
+                                print('Você tomou {} de dano! {}Vida restante: {}{}'
+                                      .format(d4, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+                                time.sleep(3)
+                                print('---' * 20)
+                        else:
+                            print('O Gobblin 3 já está morto.')
+                            time.sleep(3)
+                            print('---' * 20)
+                    # ===============POÇÃO DE VIDA=====================
+                    if esc3 == 4:
+                        if pocoes > 0:
+                            d6 = random.randint(1, 6)
+                            vidatotal = vidatotal + d6
+                            if vidatotal > 15:
+                                vidatotal = 15
+                            print('Você rolou 1d6 e tirou {}.'.format(d6))
+                            time.sleep(2)
+                            print('Você toma uma poção da cura e recupera +{} de pontos de vida. {}Vida total: '
+                                  '{}{}'.format(d6, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+                            time.sleep(3)
+                            pocoes = pocoes - 1
+                            print('{}Pocões de cura restantes: {}{}'
+                                  .format(cores['cor_pocoes'], pocoes, cores['limpa']))
+                            time.sleep(3)
+                        else:
+                            print('Suas poções de cura acabaram.')
+                            time.sleep(2)
+                        print('---' * 20)
+                else:
+                    print('VOCÊ MORREU!')
+                    print('Boa sorte na próxima jogatina.')
+                    time.sleep(4)
+                    quit()
+            tarefasCompletas = tarefasCompletas + 1
+            caminhoGobblins = 1
+            print('Você completou a tarefa número 1.')
+            time.sleep(3)
+            vidatotal = 15
+            print('Sua vida foi recuperada. {}Vida total: {}{}'
+                  .format(cores['cor_vidatotal'], vidatotal, cores['limpa']))
+            time.sleep(3)
+            print('---' * 20)
+        else:
+            print('Você já matou os Gobblins.')
+            print('---' * 20)
+    #CAMINHO DO ANCIÃO
+    if esc2 == 2:
+        if caminhoAnciao == 0:
+            #===========CONTROLE DE MÚSICA============
+            mixer.music.stop()
+            mixer.music.load('músicas rpg/caminho2.mp3')
+            mixer.music.set_volume(0.4)
+            mixer.music.play(-1)
+            # INTRODUÇÃO
+            print('Muito bem. Que comece a aventura do ancião!')
+            time.sleep(3)
+            print('---' * 20)
+            print('Você vai até o Morro Uivante, local onde o antigo ancião de Uris reside. '
+                  'Ao chegar, você encontra uma casa \nantiga em um ambiente solitário, sem animais '
+                  'ou outros seres humanos por perto.')
+            time.sleep(7)
+            print('Em uma primeira análise, você procura o ancião, mas não o encontra. Quando decide '
+                  'chamá-lo por seu nome, ouve \nbarulhos vindo da parte de trás da casa. Você então'
+                  ' dá a volta pela lateral da residência e vê um humilde \ntemplo. Dentro do local, '
+                  'uma figura grisalha está de costas pra você.')
+            time.sleep(10)
+            # ENCONTRO COM O ANCIÃO
+            print('{}1) Chamar o ancião\n2) Sair do templo'.format(cores['cor_esc']))
+            esc = int(input('Digite o número de sua escolha: {}'.format(cores['limpa'])))
+            print('---' * 20)
+            if esc == 1:
+                print('{}{}: Olá, estou a sua procura.{}'
+                      .format(cores['cor_fala'], nome.upper(), cores['limpa']))
+            if esc == 2:
+                print('Ao se virar de costas, o ancião fala.')
+                time.sleep(2)
+                print('{}ANCIÃO: Não vai me cumprimentar?{}'.format(cores['cor_fala'], cores['limpa']))
+            time.sleep(3)
+            print('{}{}: Estou aqui para desvendar o enigma do Ancião.{}'
+                  .format(cores['cor_fala'], nome.upper(), cores['limpa']))
+            time.sleep(3)
+            print('{}ANCIÃO: Muito bem, mas saiba que você tem apenas 3 chances.{}'
+                  .format(cores['cor_fala'], cores['limpa']))
+            time.sleep(3)
+            chances = 3
+            ciclo = 0
+            # ENIGMA
+            while (ciclo == 0):
+                print('Está pronto?')
+                print('{}1) Sim\n2) Não'.format(cores['cor_esc']))
+                esc = int(input('Escolha o número da sua ação: {}'.format(cores['limpa'])))
+                print('---' * 20)
+                if esc == 1:
+                    while (chances > 0 and ciclo == 0):
+                        print('{}ANCIÃO: O que é, o que é? Subindo o sol, vai se encurtando, descendo o sol, '
+                              'vai se alongando?{}'.format(cores['cor_fala'], cores['limpa']))
+                        resposta = str(input('{}Digite a sua resposta: {}'.format(cores['cor_esc'],
+                                                                                  cores['limpa']))).lower().strip()
+                        if resposta == 'sombra':
+                            print('{}{}: A resposta é a sombra.{}'
+                                  .format(cores['cor_fala'], nome.upper(), cores['limpa']))
+                            ciclo = 1
+                            time.sleep(3)
+                        else:
+                            chances = chances - 1
+                            print('{}{}: A respota é {}{}.'
+                                  .format(cores['cor_fala'], nome.upper(), resposta, cores['limpa']))
+                            time.sleep(3)
+                            print('{}ANCIÃO: Errado. Você tem mais {} chances para tentar desvendar o enigma.{}'
+                                  .format(cores['cor_fala'], chances, cores['limpa']))
+                            time.sleep(3)
+                            print('---' * 20)
+                    if chances == 0:
+                        print('Suas chances acabaram.')
+                        time.sleep(4)
+                        print('Boa sorte na próxima jogatina.')
+                        quit()
+                if esc == 2:
+                    print('{}ANCIÃO: Irei aguardar alguns segundos para se preparar.{}'
+                          .format(cores['cor_fala'], cores['limpa']))
+                    time.sleep(6)
+                    print('---' * 20)
+            print('{}ANCIÃO: Muito bem! Você está a um passo mais perto de salvar a princesa!{}'
+                  .format(cores['cor_fala'], cores['limpa']))
+            time.sleep(4)
+            print('Você completou a tarefa número 2.')
+            time.sleep(3)
+            print('---' * 20)
+            caminhoAnciao = 1
+            tarefasCompletas = tarefasCompletas + 1
+        else:
+            print('Você já completou esta tarefa.')
+            time.sleep(3)
+            print('---' * 20)
+    #CAMINHO DO MINOTAURO
+    vidaMinotauro = 35
+    if esc2 == 3:
+        if caminhoMinotauro == 0:
+            #===========CONTROLE DE MÚSICA============
+            mixer.stop()
+            mixer.music.load('músicas rpg/caminho3.mp3')
+            mixer.music.set_volume(0.4)
+            mixer.music.play(-1)
+            # INTRODUÇÃO
+            print('Muito bem. Que comece a aventura do Minotauro!')
+            time.sleep(3)
+            print('---' * 20)
+            print('Você se encontra em uma caverna dentro da floresta. Nesse lugar, há algumas '
+                  'pegadas e você resolve segui-las \ncom cautela. Ao chegar cada vez mais fundo,'
+                  ' você vê a figura de um Minotauro comendo restos de carne humana.')
+            time.sleep(8)
+            print('O que você faz?')
+            time.sleep(2)
+            # ESCOLHA ATACAR OU NÃO
+            espiar = 0
+            while espiar == 0:
+                print('{}1) Atacar\n2) Espiar'.format(cores['cor_esc']))
+                esc = int(input('Digite o número da escolha desejada: {}'.format(cores['limpa'])))
+                print('---' * 20)
+                if esc == 1:
+                    espiar = 1
+                    print('Você avança no Minotauro e pega-o de surpresa.')
+                    # COMBATE
+                    investidaMinotauro = 1
+                    while vidaMinotauro > 0:
+                        if vidatotal > 0:
+                            investidaValidador = 1
+                            time.sleep(3)
+                            d6 = random.randint(1, 6)
+                            print('---' * 20)
+                            # ESCOLHA DE QUAL ARMA UTILIZAR
+                            print('Você quer atacar com:\n{}1) Espada (1d6 + força)\n2) Adaga (1d6 + destreza'
+                                  ')\n3) Arco (1d6 + longa distância)\n4) Tomar poção de cura (1d6).'
+                                  ' {}Poções de cura restantes: {}'
+                                  .format(cores['cor_esc'], cores['cor_pocoes'], pocoes))
+                            escAtaque = int(input('{}Digite o número da arma desejada: {}'
+                                                  .format(cores['cor_esc'], cores['limpa'])))
+                            # =============ATAQUE COM ESPADA============
+                            if escAtaque == 1:
+                                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                                time.sleep(3)
+                                dano = d6 + forca
+                                vidaMinotauro = vidaMinotauro - dano
+                                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                                time.sleep(2)
+                                print('Você usou sua espada contra o Minotauro, causando {} + {} de dano contra o '
+                                      'adversário. {}Vida do oponente: {}{}'
+                                      .format(d6, forca, cores['cor_vidaOp'], vidaMinotauro, cores['limpa']))
+                            # =============ATAQUE COM ADAGA============
+                            if escAtaque == 2:
+                                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                                time.sleep(3)
+                                dano = d6 + destreza
+                                vidaMinotauro = vidaMinotauro - dano
+                                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                                time.sleep(2)
+                                print('Você usou sua adaga contra o Minotauro, causando {} + {} de dano contra o '
+                                      'adversário. {}Vida do oponente: {}{}'
+                                      .format(d6, destreza, cores['cor_vidaOp'],vidaMinotauro, cores['limpa']))
+                            # =============ATAQUE COM ARCO============
+                            if escAtaque == 3:
+                                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                                time.sleep(3)
+                                dano = d6 + longaD
+                                vidaMinotauro = vidaMinotauro - dano
+                                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                                time.sleep(2)
+                                print('Você usou seu arco contra o Minotauro, causando {} + {} de dano contra o '
+                                      'adversário. {}Vida do oponente: {}{}'
+                                      .format(d6, longaD, cores['cor_vidaOp'],vidaMinotauro, cores['limpa']))
+                            # ===============POÇÃO DE VIDA=====================
+                            if escAtaque == 4:
+                                if pocoes > 0:
+                                    d6 = random.randint(1, 6)
+                                    vidatotal = vidatotal + d6
+                                    if vidatotal > 15:
+                                        vidatotal = 15
+                                    print('Você rolou 1d6 e tirou {}.'.format(d6))
+                                    time.sleep(2)
+                                    print('Você toma uma poção da cura e recupera +{} de pontos de vida. {}Vida total: '
+                                          '{}{}'.format(d6, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+                                    time.sleep(3)
+                                    pocoes = pocoes - 1
+                                    print('{}Pocões de cura restantes: {}{}'
+                                          .format(cores['cor_pocoes'], pocoes, cores['limpa']))
+                                else:
+                                    print('Suas poções de cura acabaram.')
+                            # ==========CONTRA-ATAQUE DO MINOTAURO==========
+                            if escAtaque != 4 and vidaMinotauro > 0:
+                                time.sleep(2)
+                                print('---' * 20)
+                                print('Agora é hora do contra-ataque do Minotauro!')
+                                time.sleep(3)
+                                # OPÇÕES DE ATAQUE ALEATÓRIAS
+                                ataqueMinotauro = random.randint(1, 2)
+                                if ataqueMinotauro == 1 and investidaMinotauro == 1:
+                                    print('O Minotauro prepara um golpe rápido com seus chifres. ')
+                                    time.sleep(3)
+                                    print('{}MINOTAURO ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                                    time.sleep(3)
+                                    d6 = random.randint(1, 6)
+                                    dano = d6 + 2
+                                    vidatotal = vidatotal - dano
+                                    print('O Minotauro rolou 1d6 e tirou {}.'.format(d6))
+                                    time.sleep(3)
+                                    print('Você tomou {} + 2 de dano! {}Vida restante: {}{}'
+                                          .format(d6, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+                                if investidaMinotauro == 2:
+                                    investidaMinotauro = 1
+                                    investidaValidador = 2
+                                    print('O Minotauro corre em sua direção com os chifres apontatos direto'
+                                          ' na sua cabeça.')
+                                    time.sleep(3)
+                                    d20 = random.randint(1, 20)
+                                    d20op = random.randint(1, 20)
+                                    print('Você rola 1d20 e tira {}. O Minotauro rola 1d20 e tira '
+                                          '{}.'.format(d20, d20op))
+                                    time.sleep(3)
+                                    if d20 > d20op:
+                                        print('Você consegue desviar do ataque!')
+                                        time.sleep(3)
+                                        d4 = random.randint(1, 4)
+                                        vidaMinotauro = vidaMinotauro - d4
+                                        print('O Minotauro atinge a parede da caverna e toma 1d4 = {} de dano. {}Vida '
+                                              'do oponente: {}{}'.format(d4, cores['cor_vidaOp'], vidaMinotauro, cores['limpa']))
+                                    else:
+                                        print('O Minotauro o atinge em cheio e inflinge 1d10 + força de dano!')
+                                        time.sleep(3)
+                                        d10 = random.randint(1, 10)
+                                        dano = d10 + 2
+                                        vidatotal = vidatotal - dano
+                                        print('Você toma {} + {} de dano. {}Vida restante: {}{}'
+                                              .format(d10, 2, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+                                if ataqueMinotauro == 2 and investidaMinotauro == 1 and investidaValidador == 1:
+                                    print('O Minotauro prepara uma investida! Tempo de preparo: 1 rodada.')
+                                    investidaMinotauro = 2
+                        else:
+                            time.sleep(3)
+                            print('Você morreu! Boa sorte na próxima vez.')
+                            time.sleep(3)
+                            quit()
+                else:
+                    print('O Minotauro contina comendo carne humana.')
+                    time.sleep(3)
+                    print('---' * 20)
+            time.sleep(3)
+            print('Você matou o Minotauro!')
+            time.sleep(3)
+            print('Você completou a tarefa número 3.')
+            time.sleep(3)
+            tarefasCompletas = tarefasCompletas + 1
+            caminhoMinotauro = 1
+        else:
+            print('Você já completou esta tarefa.')
+        time.sleep(3)
+        print('---' * 20)
+#=================AVENTURA FINAL - INTRODUÇÃO================================
+#===========CONTROLE DA MÚSICA========
+mixer.music.stop()
+mixer.music.load('músicas rpg/Missões finais.mp3')
+mixer.music.set_volume(0.3)
+mixer.music.play(-1)
+print('Muito bem! Você completou as 3 tarefas! Seus pontos de vida foram restaurados.')
+vidatotal = 15
+time.sleep(4)
+print('---' * 20)
+print('Você volta para a taverna e encontra o Mago sentado em uma mesa.')
+time.sleep(4)
+print('{}{}: Como prometido, Mago, completei as 3 tarefas necessárias para o último desafio. '
+      'Estou pronto para \nresgatar a princesa.{}'
+      .format(cores['cor_fala'], nome.upper(), cores['limpa']))
+time.sleep(6)
+print('{}MAGO: Muito bem, meu jovem. Onde está a cabeça do Minotauro?{}'
+      .format(cores['cor_fala'], cores['limpa']))
+time.sleep(4)
+print('Você coloca a cabeça em cima da mesa.')
+time.sleep(4)
+print('As pessoas em sua volta ficam com medo e se afastam. O bartender está de olho em vocês.')
+time.sleep(4)
+print('{}{}: Onde a princesa está?{}'.format(cores['cor_fala'], nome.upper(), cores['limpa']))
+time.sleep(4)
+print('{}MAGO: Muita calma, {}, a princesa está em um castelo depois da floresta controlado por '
+      'um ser poderoso{}'.format(cores['cor_fala'], nome.title(), cores['limpa']))
+time.sleep(4)
+print('{}MAGO: Dessa forma, vou te entregar uma arma de sua escolha, além de mais 5 poções.{}'
+      .format(cores['cor_fala'], cores['limpa']))
+time.sleep(8)
+#ESCOLHA DO UPGRADE
+print('{}1) Espada flamejante (1d6 + força + 1d4 de dano flamejante)\n2) Adaga obscura (1d6 + '
+      'destreza + 1d4 de dano das trevas)\n3) Arco rosa (É o mesmo arco, só que rosa)'
+      .format(cores['cor_esc']))
+esc = int(input('Digite a arma escolhida: {}'.format(cores['limpa'])))
+print('---' * 20)
+if esc == 1:
+    arma = 'espada flamejante'
+    print('Você recebeu uma {}!'.format(arma.upper()))
+    menuAtaque = 'Você quer atacar com:\n1) Espada (1d6 + força)\n2) Adaga ' \
+                 '(1d6 + destreza)\n3) Arco (1d6 + longa distância)\n4) Espada flamejante ' \
+                 '(1d6 + força + 1d4 de dano flamejante)\n5) Tomar poção de cura (1d6)'
+if esc == 2:
+    arma = 'adaga obscura'
+    print('Você recebeu uma {}!'.format(arma.upper()))
+    menuAtaque = 'Você quer atacar com:\n1) Espada (1d6 + força)\n2) Adaga ' \
+                 '(1d6 + destreza)\n3) Arco (1d6 + longa distância)\n4) Adaga obscura ' \
+                 '(1d6 + força + 1d4 de dano das trevas)\n5) Tomar poção de cura (1d6)'
+if esc == 3:
+    arma = 'espada rosa'
+    print('Você recebeu uma {}!'.format(arma.upper()))
+    menuAtaque = 'Você quer atacar com:\n1) Espada (1d6 + força)\n2) Adaga ' \
+                 '(1d6 + destreza)\n3) Arco (1d6 + longa distância)\n4) Arco rosa (É o mesmo ' \
+                 'arco, só que rosa)\n5) Tomar poção de cura (1d6)'
+time.sleep(4)
+pocoes = pocoes + 5
+print('Você recebeu mais 5 poções de cura. {}Poções restantes: {}{}'
+      .format(cores['cor_pocoes'], pocoes, cores['limpa']))
+time.sleep(4)
+print('---' * 20)
+print('{}MAGO: {}, no caminho até o castelo, você vai passar por mais 3 desafios que, infelizmente, '
+      'não sei dizer \nquais são. Boa sorte nessa jornada.{}'
+      .format(cores['cor_fala'], nome.upper(), cores['limpa']))
+time.sleep(6)
+print('{}{}: Muito obrigado!{}'.format(cores['cor_fala'], nome.upper(), cores['limpa']))
+time.sleep(3)
+print('{}MAGO: Ah, mais uma coisa! Você receberá mais 5 pontos de vida através da minha magia.{}'
+      .format(cores['cor_fala'], cores['limpa']))
+time.sleep(4)
+vidatotal = 20
+print('Você sente um aumento de adrenalina em suas veias.')
+time.sleep(4)
+print('{}MAGO: Agora você está preparado.{}'.format(cores['cor_fala'], cores['limpa']))
+time.sleep(4)
+print('---' * 20)
+print('Que comece a aventura final!')
+time.sleep(4)
+print('{}Pontos de vida totais: {}{}'.format(cores['cor_vidatotal'], vidatotal, cores['limpa']))
+time.sleep(4)
+print('---' * 20)
+#COMEÇO DA AVENTURA FINAL
+print('Você viaja dois dias na floresta tranquilamente e sai dela. Ao horizonte, você vê o castelo '
+      'que está buscando.')
+time.sleep(4)
+print('No caminho, você encontra uma ponte e um Elfo no meio dela. Ao tentar atravessá-la, o '
+      'desconhecido barra \nsua passagem.')
+time.sleep(4)
+print('{}ELFO: Parado, viajante! Se quer passar pela ponte, terá que me vencer em uma melhor de três jogo de'
+      ' jokenpo! \nCaso ganhe, deixo-lhe passar livremente, mas caso perca, terá que batalhar comigo!{}'
+      .format(cores['cor_fala'], cores['limpa']))
+time.sleep(4)
+#PRIMEIRO DESAFIO - JOKENPO
+print('{}1) Aceitar o desafio do jokenpo\n2) Não aceitar e pular pra batalha'.format(cores['cor_esc']))
+batalhaElfo = 0 #Batalha ativa
+esc = int(input('Digite o número de sua decisão: {}'.format(cores['limpa'])))
+if esc == 1:
+    #VARIÁVEIS JOKENPO
+    melhorde3 = 0
+    vitJogador = 0
+    vitElfo = 0
+    melhorde3 = 0
+    vitJogador = 0
+    vitElfo = 0
+    print('---' * 20)
+    print('{}ELFO: Muito bem. Prepare-se!{}'.format(cores['cor_fala'], cores['limpa']))
+    while melhorde3 < 3 and vitElfo < 2 and vitJogador < 2:
+        #DEFININDO PEDRA PAPEL OU TESOURA
+        time.sleep(3)
+        jkpO = random.randint(1, 3)
+        print('{}1) Pedra\n2) Papel\n3) Tesoura'.format(cores['cor_esc']))
+        jkp = int(input('Digite a jogada desejada: {}'.format(cores['limpa'])))
+        print('---' * 20)
+        #DEFININDO STRINGS DAS JOGADAS
+        if jkp == 1:
+            jkp_str = 'Pedra'
+        if jkp == 2:
+            jkp_str = 'Papel'
+        if jkp == 3:
+            jkp_str = 'Tesoura'
+        if jkpO == 1:
+            jkpO_str = 'Pedra'
+        if jkpO == 2:
+            jkpO_str = 'Papel'
+        if jkpO == 3:
+            jkpO_str = 'Tesoura'
+        #MOSTRANDO RESULTADOS
+        print('JO')
+        time.sleep(1)
+        print('KEN')
+        time.sleep(1)
+        print('PO!')
+        time.sleep(1)
+        print('A sua jogada foi: {}'.format(jkp_str))
+        print('A jogada do oponente foi: {}'.format(jkpO_str))
+        time.sleep(1)
+        # JOGOS EMPATADOS
+        if jkp == jkpO:
+            print('O jogo foi EMPATADO!')
+            print('---' * 20)
+        # JOGOS GANHOS
+        if jkp == 1 and jkpO == 3 or jkp == 2 and jkpO == 1 or jkp == 3 and jkpO == 2:
+            print('Você GANHOU!')
+            vitJogador = vitJogador + 1
+            print('---' * 20)
+        # JOGOS PERDIDOS
+        if jkp == 3 and jkpO == 1 or jkp == 1 and jkpO == 2 or jkp == 2 and jkpO == 3:
+            print('Você PERDEU!')
+            vitElfo = vitElfo + 1
+            print('---' * 20)
+        #CONTROLE DE RESULTADO DO MELHOR DE 3
+        melhorde3 = melhorde3 + 1
+        if vitElfo == 2 or vitJogador == 2:
+            melhorde3 = 3
+        if vitJogador > vitElfo and melhorde3 == 3:
+            time.sleep(3)
+            print('{}ELFO: Você venceu o jokenpo, logo pode passar livremente pela ponte. '
+                  'Boa sorte em sua jornada.{}'.format(cores['cor_fala'], cores['limpa']))
+            batalhaElfo = 1
+            time.sleep(3)
+        if vitElfo > vitJogador and melhorde3 == 3:
+            time.sleep(3)
+            print('{}ELFO: Você perdeu o jokenpo, agora terá que lutar!{}'
+                  .format(cores['cor_fala'], cores['limpa']))
+            time.sleep(3)
+            print('---' * 20)
+        if vitElfo == vitJogador and melhorde3 == 3:
+            time.sleep(3)
+            print('O resultado do jogo foi EMPATE! Jogue uma nova partida.')
+            melhorde3 = 0
+            vitElfo = 0
+            vitJogador = 0
+            print('---' * 20)
+if batalhaElfo == 0:
+    # BATALHA COM O ELFO
+    print('{}BATALHA COMEÇANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+    time.sleep(3)
+    vidaElfo = 20
+    while vidaElfo > 0:
+        if vidatotal > 0:
+            d6 = random.randint(1, 6)
+            d4 = random.randint(1, 4)
+            print('---' * 20)
+            # ESCOLHA DE QUAL ARMA UTILIZAR
+            print('{}{}. {}Poções de cura restantes: {}'
+                  .format(cores['cor_esc'],menuAtaque, cores['cor_pocoes'],pocoes))
+            escAtaque = int(input('{}Digite o número da arma desejada: {}'
+                                  .format(cores['cor_esc'], cores['limpa'])))
+            # =============ATAQUE COM ESPADA============
+            if escAtaque == 1:
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + forca
+                vidaElfo = vidaElfo - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou sua espada contra o Elfo, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, forca, cores['cor_vidaOp'], vidaElfo, cores['limpa']))
+            # =============ATAQUE COM ADAGA============
+            if escAtaque == 2:
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + destreza
+                vidaElfo = vidaElfo - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou sua adaga contra o Elfo, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, destreza, cores['cor_vidaOp'], vidaElfo, cores['limpa']))
+            # =============ATAQUE COM ARCO============
+            if escAtaque == 3:
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + longaD
+                vidaElfo = vidaElfo - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou seu arco contra o Elfo, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, longaD, cores['cor_vidaOp'], vidaElfo, cores['limpa']))
+            # ==============ARMAS ESPECIAIS ============
+            # ESPADA FLAMEJANTE
+            if escAtaque == 4 and arma == 'espada flamejante':
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + forca + d4
+                vidaElfo = vidaElfo - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('Você rolou 1d4 e tirou {}'.format(d4))
+                time.sleep(2)
+                print('Você usou sua espada flamejante contra o Elfo, causando {} + {} + {}'
+                      ' de dano contra o adversário. {}Vida do \noponente: {}{}'
+                      .format(d6, forca, d4, cores['cor_vidaOp'], vidaElfo, cores['limpa']))
+            # ADAGA DAS TREVAS
+            if escAtaque == 4 and arma == 'adaga obscura':
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + forca + d4
+                vidaElfo = vidaElfo - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('Você rolou 1d4 e tirou {}'.format(d4))
+                time.sleep(2)
+                print('Você usou sua adaga obscura contra o Elfo, causando {} + {} + {}'
+                        ' de dano contra o adversário. {}Vida do \noponente: {}{}'
+                      .format(d6, forca, d4, cores['cor_vidaOp'], vidaElfo, cores['limpa']))
+            # =================ARCO ROSA=============
+            if escAtaque == 4 and arma == 'arco rosa':
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + forca
+                vidaElfo = vidaElfo - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('Você usou seu arco rosa contra o Elfo, causando {} + {}'
+                        ' de dano contra o adversário. {}Vida do oponente: {}{}'
+                      .format(d6, forca, cores['cor_vidaOp'], vidaElfo, cores['limpa']))
+            # ===============POÇÃO DE VIDA=====================
+            if escAtaque == 5:
+                if pocoes > 0:
+                    d6 = random.randint(1, 6)
+                    vidatotal = vidatotal + d6
+                    if vidatotal > 20:
+                        vidatotal = 20
+                    print('Você rolou 1d6 e tirou {}.'.format(d6))
+                    time.sleep(2)
+                    print('Você toma uma poção da cura e recupera +{} de pontos de vida. {}Vida total: '
+                          '{}{}'.format(d6, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+                    time.sleep(3)
+                    pocoes = pocoes - 1
+                    print('{}Pocões de cura restantes: {}{}'
+                          .format(cores['cor_pocoes'], pocoes, cores['limpa']))
+                else:
+                    print('Suas poções de cura acabaram.')
+            # ===============CONTRA ATAQUE DO ELFO===============
+            if escAtaque != 5 and vidaElfo > 0:
+                time.sleep(2)
+                print('---' * 20)
+                print('Agora é hora do contra-ataque do Elfo!')
+                time.sleep(3)
+                print('O Elfo ataca você com uma espada.')
+                d6 = random.randint(1,6)
+                time.sleep(3)
+                print('O Elfo rola 1d6 e tira {}.'.format(d6))
+                vidatotal = vidatotal - d6
+                time.sleep(3)
+                print('Você toma {} de dano. {}Vida restante: {}{}'
+                      .format(d6, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+                time.sleep(3)
+            if vidatotal <= 0:
+                print('---' * 20)
+                print('Você morreu. Boa sorte na próxima jogatina.')
+                time.sleep(3)
+                quit()
+    #DERROTA DO ELFO
+    time.sleep(3)
+    print('Você derrotou o Elfo e pode prosseguir com sua jornada!')
+    time.sleep(3)
+    vidatotal = 20
+    print('Sua vida foi recuperada. {}Vida total: {}.{}'
+          .format(cores['cor_vidatotal'], vidatotal, cores['limpa']))
+    time.sleep(3)
+    print('---' * 20)
+#SEGUNDO DESAFIO DA AVENTURA FINAL
+print('Seguindo pela estrada de terra depois da ponte por algumas horas, você encontra um jovem bardo '
+      'na beira do \ncaminho.')
+time.sleep(3)
+print('{}BARDO: Ei, você aí.{}'.format(cores['cor_fala'], cores['limpa']))
+time.sleep(3)
+print('{}{}: Diga, nobre bardo.{}'.format(cores['cor_fala'], nome.upper(), cores['limpa']))
+time.sleep(3)
+print('{}BARDO: Eu sou o dono dessa estrada e você só pode passar de duas maneiras: ou toque uma música '
+      'que me agrade, \nou terá que batalhar comigo!{}'.format(cores['cor_fala'], cores['limpa']))
+time.sleep(3)
+print('{}BARDO: Qual vai ser sua escolha?{}'.format(cores['cor_fala'], cores['limpa']))
+time.sleep(3)
+print('{}1) Tocar uma música\n2) Batalhar'.format(cores['cor_esc']))
+esc = int(input('Digite a opção desejada: {}'.format(cores['limpa'])))
+batalhaBardo = 0
+print('---' * 20)
+if esc == 1:
+    print('{}{}: Eu escolho tocar uma música.{}'.format(cores['cor_fala'], nome.upper(), cores['limpa']))
+    time.sleep(3)
+    print('{}BARDO: Muito bem! Tome aqui meu alaúde.{}'.format(cores['cor_fala'], cores['limpa']))
+    time.sleep(3)
+    print('{}1) Greensleeves\n2) Kvothe and Auri\n3) Toss a Coin To Your Witcher'.format(cores['cor_esc']))
+    esc = int(input('Escolha a música desejada: {}'.format(cores['limpa'])))
+    mixer.music.stop()
+    d20 = random.randint(1,20)
+    d20op = random.randint(1,20)
+    print('Tocando...')
+    if esc == 1:
+        mixer.music.load('músicas rpg/Greensleeves.mp3')
+        mixer.music.set_volume(0.5)
+        mixer.music.play()
+        time.sleep(19)
+    if esc == 2:
+        mixer.music.load('músicas rpg/Kvothe and Auri.mp3')
+        mixer.music.set_volume(0.5)
+        mixer.music.play()
+        time.sleep(36)
+    if esc == 3:
+        mixer.music.load('músicas rpg/Toss a coin to your witcher.mp3')
+        mixer.music.set_volume(0.5)
+        mixer.music.play()
+        time.sleep(20)
+    #=======CONTROLE DE MÚSICA========
+    mixer.music.stop()
+    mixer.music.load('músicas rpg/Missões finais.mp3')
+    mixer.music.set_volume(0.3)
+    mixer.music.play(-1)
+    time.sleep(3)
+    print('Você rola um d20 e tira {}.'.format(d20))
+    time.sleep(3)
+    print('O oponente rola um d20 e tira {}.'.format(d20op))
+    time.sleep(3)
+    if d20 > d20op:
+        print('{}BARDO: Muito bem, você me surpreendeu. Pode passar pelo caminho e continuar sua jornada.{}'
+              .format(cores['cor_fala'], cores['limpa']))
+        time.sleep(3)
+        print('{}{}: Muito obrigado.{}'.format(cores['cor_fala'], nome.upper(), cores['limpa']))
+        time.sleep(3)
+        batalhaBardo = 1
+    else:
+        print('{}BARDO: Você é péssimo na música. Vamos batalhar!{}'
+              .format(cores['cor_fala'], cores['limpa']))
+        time.sleep(3)
+if batalhaBardo == 0:
+    #BATALHA COM O BARDO
+    print('{}BATALHA COMEÇANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+    time.sleep(3)
+    vidaBardo = 20
+    while vidaBardo > 0:
+        if vidatotal > 0:
+            d6 = random.randint(1, 6)
+            d4 = random.randint(1, 4)
+            print('---' * 20)
+            # ESCOLHA DE QUAL ARMA UTILIZAR
+            print('{}{}. {}Poções de cura restantes: {}'
+                  .format(cores['cor_esc'], menuAtaque, cores['cor_pocoes'], pocoes))
+            escAtaque = int(input('{}Digite o número da arma desejada: {}'
+                    .format(cores['cor_esc'], cores['limpa'])))
+            # =============ATAQUE COM ESPADA============
+            if escAtaque == 1:
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + forca
+                vidaBardo = vidaBardo - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou sua espada contra o Bardo, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, forca, cores['cor_vidaOp'], vidaBardo, cores['limpa']))
+            # =============ATAQUE COM ADAGA============
+            if escAtaque == 2:
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + destreza
+                vidaBardo = vidaBardo - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou sua adaga contra o Bardo, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, destreza, cores['cor_vidaOp'], vidaBardo, cores['limpa']))
+            # =============ATAQUE COM ARCO============
+            if escAtaque == 3:
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + longaD
+                vidaBardo = vidaBardo - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou seu arco contra o Bardo, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, longaD, cores['cor_vidaOp'],vidaBardo, cores['limpa']))
+            # ==============ARMAS ESPECIAIS ============
+            # ESPADA FLAMEJANTE
+            if escAtaque == 4 and arma == 'espada flamejante':
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + forca + d4
+                vidaBardo = vidaBardo - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('Você rolou 1d4 e tirou {}'.format(d4))
+                time.sleep(2)
+                print('Você usou sua espada flamejante contra o Bardo, causando {} + {} + {}'
+                      ' de dano contra o adversário. {}Vida do \noponente: {}{}'
+                      .format(d6, forca, d4, cores['cor_vidaOp'],vidaBardo, cores['limpa']))
+            # ADAGA DAS TREVAS
+            if escAtaque == 4 and arma == 'adaga obscura':
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + forca + d4
+                vidaBardo = vidaBardo - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('Você rolou 1d4 e tirou {}'.format(d4))
+                time.sleep(2)
+                print('Você usou sua adaga obscura contra o Bardo, causando {} + {} + {}'
+                      ' de dano contra o adversário. {}Vida do \noponente: {}{}'
+                      .format(d6, forca, d4, cores['cor_vidaOp'],vidaBardo, cores['limpa']))
+            # =================ARCO ROSA=============
+            if escAtaque == 4 and arma == 'arco rosa':
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + forca
+                vidaBardo = vidaBardo - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('Você usou seu arco rosa contra o Bardo, causando {} + {}'
+                      ' de dano contra o adversário. {}Vida do oponente: {}{}'
+                      .format(d6, forca, cores['cor_vidaOp'],vidaBardo, cores['limpa']))
+            # ===============POÇÃO DE VIDA=====================
+            if escAtaque == 5:
+                if pocoes > 0:
+                    d6 = random.randint(1, 6)
+                    vidatotal = vidatotal + d6
+                    if vidatotal > 20:
+                        vidatotal = 20
+                    print('Você rolou 1d6 e tirou {}.'.format(d6))
+                    time.sleep(2)
+                    print('Você toma uma poção da cura e recupera +{} de pontos de vida. {}Vida total: '
+                          '{}{}'.format(d6, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+                    time.sleep(3)
+                    pocoes = pocoes - 1
+                    print('{}Pocões de cura restantes: {}{}'
+                          .format(cores['cor_pocoes'], pocoes, cores['limpa']))
+                else:
+                    print('Suas poções de cura acabaram.')
+            # ===============CONTRA ATAQUE DO ELFO===============
+            if escAtaque != 5 and vidaBardo > 0:
+                time.sleep(2)
+                print('---' * 20)
+                print('Agora é hora do contra-ataque do Bardo!')
+                time.sleep(3)
+                print('O Bardo toca o alaúde em uma frequência que danifica seus crânio!.')
+                d6 = random.randint(1, 6)
+                time.sleep(3)
+                print('O Bardo rola 1d6 e tira {}.'.format(d6))
+                vidatotal = vidatotal - d6
+                time.sleep(3)
+                print('Você toma {} de dano. {}Vida restante: {}{}'
+                      .format(d6, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+                time.sleep(3)
+            if vidatotal <= 0:
+                print('---' * 20)
+                print('Você morreu. Boa sorte na próxima jogatina.')
+                time.sleep(3)
+                quit()
+    #DERROTA DO BARDO
+    time.sleep(3)
+    print('Você derrotou o Bardo e pode prosseguir com sua jornada!')
+    time.sleep(3)
+    vidatotal = 20
+    print('Sua vida foi recuperada. {}Vida total: {}.{}'
+          .format(cores['cor_vidatotal'], vidatotal, cores['limpa']))
+    time.sleep(3)
+    print('---' * 20)
+# TERCEIRO DESAFIO ANTES DA PRINCESA
+print('Você agora segue pela estrada e chega perto do castelo. Na sua frente, porém, um ladino se'
+      ' encontra.')
+time.sleep(3)
+print('{}LADINO: Parado, aventureiro.{}'.format(cores['cor_fala'], cores['limpa']))
+time.sleep(2)
+print('{}LADINO: Para passar por mim, você deverá completar um desafio matemático ou batalhar comigo!{}'
+      .format(cores['cor_fala'], cores['limpa']))
+time.sleep(3)
+print('{}1) Desafio matemático\n2) Batalha'.format(cores['cor_esc']))
+esc = int(input('Escolha a sua ação: {}'.format(cores['limpa'])))
+print('---' * 20)
+if esc == 1:
+    # DESAFIOS MATEMÁTICOS
+    print('{}LADINO: Muito bem! Nesse desafio, você deverá responder o próximo número de três sequências'
+          ' lógicas. Caso \nerre alguma delas, você deverá me vencer em um combate!{}'
+          .format(cores['cor_fala'], cores['limpa']))
+    time.sleep(5)
+    preparadoLadino = 0
+    while preparadoLadino == 0:
+        print('{}LADINO: Preparado?{}'.format(cores['cor_fala'], cores['limpa']))
+        time.sleep(1)
+        print('{}1) Sim\n2) Não'.format(cores['cor_esc']))
+        esc = int(input('Escolha sua ação: {}'.format(cores['limpa'])))
+        print('---' * 20)
+        if esc == 1:
+            preparadoLadino = 1
+            matematicaValidador = 1
+            print('{}{}: Estou sim, mande os desafios!{}'
+                  .format(cores['cor_fala'], nome.upper(), cores['limpa']))
+            time.sleep(3)
+            #===============PRIMEIRO DESAFIO MATEMÁTICO================
+            print('{}LADINO: A primeira sequência é 2, 4, 8, 16, 32, 64... Qual o próximo número?{}'
+                  .format(cores['cor_fala'], cores['limpa']))
+            esc = int(input('{}Resposta: {}'.format(cores['cor_esc'],cores['limpa'])))
+            if esc == 128:
+                print('{}{}: A resposta é 128.{}'
+                    .format(cores['cor_fala'], nome.upper(), cores['limpa']))
+                time.sleep(2)
+                print('{}LADINO: Acertou!{}'.format(cores['cor_fala'], cores['limpa']))
+                time.sleep(2)
+                #================SEGUNDO DESAFIO MATEMÁTICO==============
+                print('{}LADINO: A segunda sequência é 4, 16, 36, 64... Qual é o próximo número?{}'
+                      .format(cores['cor_fala'], cores['limpa']))
+                esc = int(input('{}Resposta: {}'.format(cores['cor_esc'],cores['limpa'])))
+                if esc == 100 and matematicaValidador == 1:
+                    print('{}{}: A resposta é 100.{}'.format(cores['cor_fala'], nome.upper(), cores['limpa']))
+                    time.sleep(2)
+                    print('{}LADINO: Acertou!{}'.format(cores['cor_fala'], cores['limpa']))
+                    time.sleep(2)
+                    #================TERCEIRO DESAFIO MATEMÁTICO==============
+                    print('{}LADINO: A última sequência é 2, 10, 12, 16, 17, 18, 19... Qual é o próximo número?{}'
+                          .format(cores['cor_fala'], cores['limpa']))
+                    esc = int(input('{}Resposta: {}'.format(cores['cor_esc'],cores['limpa'])))
+                    if esc == 200 and matematicaValidador == 1:
+                        print('{}{}: A resposta é 200.{}'.format(cores['cor_fala'], nome.upper(), cores['limpa']))
+                        time.sleep(2)
+                        print('{}LADINO: Muito bem, aventureiro! Você está apto para prosseguir com sua jornada!{}'
+                              .format(cores['cor_fala'], cores['limpa']))
+                        batalhaLadino = 0
+                        time.sleep(3)
+                        print('---' * 20)
+                    #=====ERRO NO PRIMEIRO DESAFIO=====
+                    else:
+                        print('{}{}: A resposta é {}.{}'.format(cores['cor_fala'], nome.upper(), esc, cores['limpa']))
+                        time.sleep(2)
+                        print('{}LADINO: Errou! Para prosseguir, terá que me vencer em uma batalha!{}'
+                              .format(cores['cor_fala'], cores['limpa']))
+                        batalhaLadino = 1
+                #=====ERRO NO SEGUNDO DESAFIO=====
+                else:
+                    print('{}{}: A resposta é {}.{}'.format(cores['cor_fala'], nome.upper(), esc, cores['limpa']))
+                    time.sleep(2)
+                    print('{}LADINO: Errou! Para prosseguir, terá que me vencer em uma batalha!{}'
+                          .format(cores['cor_fala'], cores['limpa']))
+                    batalhaLadino = 1
+            #=====ERRO NO TERCEIRO DESAFIO=====
+            else:
+                print('{}{}: A resposta é {}.{}'.format(cores['cor_fala'], nome.upper(), esc, cores['limpa']))
+                time.sleep(2)
+                print('{}LADINO: Errou! Para prosseguir, terá que me vencer em uma batalha!{}'
+                      .format(cores['cor_fala'], cores['limpa']))
+                batalhaLadino = 1
+        else:
+            print('{}LADINO: Tudo bem, te darei alguns segundos.{}'.format(cores['cor_fala'], cores['limpa']))
+            time.sleep(5)
+if esc == 2 or batalhaLadino == 1:
+    time.sleep(3)
+    print('{}BATALHA COMEÇANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+    time.sleep(3)
+    vidaLadino = 20
+    while vidaLadino > 0:
+        if vidatotal > 0:
+            d6 = random.randint(1, 6)
+            d4 = random.randint(1, 4)
+            print('---' * 20)
+            # ESCOLHA DE QUAL ARMA UTILIZAR
+            print('{}{}. {}Poções de cura restantes: {}'
+                  .format(cores['cor_esc'],menuAtaque, cores['cor_pocoes'], pocoes))
+            escAtaque = int(input('{}Digite o número da arma desejada: {}'
+                    .format(cores['cor_esc'], cores['limpa'])))
+            # =============ATAQUE COM ESPADA============
+            if escAtaque == 1:
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + forca
+                vidaLadino = vidaLadino - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou sua espada contra o Ladino, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, forca, cores['cor_vidaOp'], vidaLadino, cores['limpa']))
+            # =============ATAQUE COM ADAGA============
+            if escAtaque == 2:
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + destreza
+                vidaLadino = vidaLadino - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou sua adaga contra o Ladino, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, destreza, cores['cor_vidaOp'], vidaLadino, cores['limpa']))
+            # =============ATAQUE COM ARCO============
+            if escAtaque == 3:
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + longaD
+                vidaLadino = vidaLadino - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou seu arco contra o Ladino, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, longaD, cores['cor_vidaOp'], vidaLadino, cores['limpa']))
+            # ==============ARMAS ESPECIAIS ============
+            # ESPADA FLAMEJANTE
+            if escAtaque == 4 and arma == 'espada flamejante':
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + forca + d4
+                vidaLadino = vidaLadino - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('Você rolou 1d4 e tirou {}'.format(d4))
+                time.sleep(2)
+                print('Você usou sua espada flamejante contra o Ladino, causando {} + {} + {}'
+                      ' de dano contra o adversário. {}Vida do \noponente: {}{}'
+                      .format(d6, forca, d4, cores['cor_vidaOp'], vidaLadino, cores['limpa']))
+            # ADAGA DAS TREVAS
+            if escAtaque == 4 and arma == 'adaga obscura':
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + forca + d4
+                vidaLadino = vidaLadino - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('Você rolou 1d4 e tirou {}'.format(d4))
+                time.sleep(2)
+                print('Você usou sua adaga obscura contra o Ladino, causando {} + {} + {}'
+                      ' de dano contra o adversário. {}Vida do \noponente: {}{}'
+                      .format(d6, forca, d4, cores['cor_vidaOp'],vidaLadino, cores['limpa']))
+            # =================ARCO ROSA=============
+            if escAtaque == 4 and arma == 'arco rosa':
+                print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                dano = d6 + forca
+                vidaLadino = vidaLadino - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('Você usou seu arco rosa contra o Ladino, causando {} + {}'
+                      ' de dano contra o adversário. {}Vida do oponente: {}{}'
+                      .format(d6, forca, cores['cor_vidaOp'], vidaLadino, cores['limpa']))
+            # ===============POÇÃO DE VIDA=====================
+            if escAtaque == 5:
+                if pocoes > 0:
+                    d6 = random.randint(1, 6)
+                    vidatotal = vidatotal + d6
+                    if vidatotal > 20:
+                        vidatotal = 20
+                    print('Você rolou 1d6 e tirou {}.'.format(d6))
+                    time.sleep(2)
+                    print('Você toma uma poção da cura e recupera +{} de pontos de vida. {}Vida total: '
+                          '{}{}'.format(d6, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+                    time.sleep(3)
+                    pocoes = pocoes - 1
+                    print('{}Pocões de cura restantes: {}{}'
+                          .format(cores['cor_pocoes'], pocoes, cores['limpa']))
+                else:
+                    print('Suas poções de cura acabaram.')
+            # ===============CONTRA ATAQUE DO ELFO===============
+            if escAtaque != 5 and vidaLadino > 0:
+                time.sleep(2)
+                print('---' * 20)
+                print('Agora é hora do contra-ataque do Ladino!')
+                time.sleep(3)
+                print('O Ladino te golpeia com uma investida rápida com sua adaga.')
+                d6 = random.randint(1, 6)
+                time.sleep(3)
+                print('O Ladino rola 1d6 e tira {}.'.format(d6))
+                vidatotal = vidatotal - d6
+                time.sleep(3)
+                print('Você toma {} de dano. {}Vida restante: {}{}'
+                      .format(d6, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+                time.sleep(3)
+            if vidatotal <= 0:
+                print('---' * 20)
+                print('Você morreu. Boa sorte na próxima jogatina.')
+                time.sleep(3)
+                quit()
+    # DERROTA DO LADINO
+    time.sleep(3)
+    print('Você derrotou o Ladino e pode prosseguir com sua jornada!')
+    time.sleep(3)
+    vidatotal = 20
+    print('Sua vida foi recuperada. {}Vida total: {}.{}'.
+          format(cores['cor_vidatotal'], vidatotal, cores['limpa']))
+    time.sleep(3)
+    print('---' * 20)
+#======================RESGATE DA PRINCESA======================
+#======CONTROLE DE MÚSICA=========
+mixer.music.stop()
+mixer.music.load('músicas rpg/dark library.mp3')
+mixer.music.set_volume(0.5)
+mixer.music.play(-1)
+print('Você está em frente do castelo de arte gótica, com imensas torres que aparentam querer fincar o céu '
+      'cinzento. Você sente um pingo cair em sua testa e logo percebe que uma tempestade se aproxima.')
+time.sleep(7)
+print('Ao abrir as portas duplas, você entra no castelo e, em seguida, a entrada fecha com as forças do vento.'
+      ' O \nestrondo do impacto ecoa sobre o escuro salão vazio onde você se encontra. Logo a frente, você vê '
+      'um corredor \nlevemente clareado por velas e resolve seguir por esse caminho.')
+time.sleep(10)
+print('No corredor, há a presença de vários quadros e esculturas melancólicas, o que traz um ar pesado ao local.'
+      ' Além \ndisso, sujeiras se encontram por toda a parte, o que leva a impressão de que o lugar fora abandonado'
+      ' há algum \ntempo.')
+time.sleep(8)
+print('Ao final do corredor, há uma divisão do caminho em direções contrárias que, aparentemente, se '
+      'reencontram \ndepois de cruzá-los.')
+time.sleep(6)
+print('{}1) Seguir pela esquerda\n2) Seguir pela direita'.format(cores['cor_esc']))
+esc = int(input('Digite o caminho que deseja seguir: {}'.format(cores['limpa'])))
+print('---' * 20)
+if esc == 1:
+    print('Você segue pela esquerda e observa pinturas que retratam o Sol.')
+    time.sleep(3)
+    print('A primeira delas retrata a estrela infligindo seus raios solares em uma aldeia, promovendo energia'
+          ' para o \nplantio do alimento e para a prosperidade humana.')
+    time.sleep(5)
+    print('Na segunda pintura, o Sol retratado anteriormente está mais forte. A mesma aldeia enfrenta problemas '
+          'de fome \ne escassez de água.')
+    time.sleep(5)
+    print('Na última, a luz quente e brilhante ofusca qualquer chance de prosperidade humana.')
+    time.sleep(3)
+if esc == 2:
+    print('Você segue pela direita e observa pinturas que retratam a Lua.')
+    time.sleep(3)
+    print('A primeira delas retrata o astro iluminando a noite de uma aldeia, promovendo uma fonte de luz ao meio '
+          'da \nescuridão iminnte da noite. ')
+    time.sleep(5)
+    print('Na segunda pintura, o brilho da Lua está mais fraco e a luz do sol refletida já não é suficiente '
+          'para manter \na segurança na aldeia retratada.')
+    time.sleep(5)
+    print('Na última, a escuridão toma conta do ambiente, ofuscando completamente a chance de prosperidade da'
+          ' vida humana.')
+    time.sleep(5)
+print('Os caminhos se reencontram em um grande salão de festas. Ao fundo, um órgão toca.')
+time.sleep(3)
+print('Uma voz familiar oriunda do instrumentista começa a se reproduzir.')
+time.sleep(3)
+print('---' * 20)
+print('{}VOZ: Eu estava te esperando, {}.{}'.format(cores['cor_fala'], nome.title(), cores['limpa']))
+time.sleep(3)
+print('{}{}: Cadê a princesa?! E quem é você?!{}'.format(cores['cor_fala'], nome.upper(), cores['limpa']))
+time.sleep(3)
+print('{}VOZ: Se você olhar pra cima, encontrará o que busca. Agora quem sou eu? Fico surpreso que não '
+      'tenha ainda \ndescoberto.{}'.format(cores['cor_fala'], cores['limpa']))
+time.sleep(6)
+print('O até então desconhecido se vira e você o reconhece.')
+time.sleep(5)
+print('{}{}: Mago?! Você está por trás de tudo isso?{}'
+      .format(cores['cor_fala'], nome.upper(), cores['limpa']))
+time.sleep(5)
+print('Ao olhar pra cima, você percebe que a princesa está presa em uma jaula suspensa por correntes conectadas '
+      'ao \nteto do castelo. Ela está caída e com os olhos fechados, não expressando nenhuma reação.')
+time.sleep(10)
+print('{}MAGO: Não se preocupe, ela está a salva. Bem, pelo menos por enquanto.{}'
+      .format(cores['cor_fala'], cores['limpa']))
+time.sleep(5)
+print('{}{}: Qual é seu plano, Mago? Me derrotar e ficar com a princesa? Isso não faz sentido!{}'
+      .format(cores['cor_fala'], nome.upper(), cores['limpa']))
+time.sleep(5)
+print('{}MAGO: Bem, deixe-me explicar. Todas as missões realizadas por você serviram puramente para disfarçar o'
+      ' meu \nprotagonismo em toda essa história. Veja, a cabeça do Minotauro, os Gobblins da floresta e o '
+      'enigma do Ancião, \nque por sinal é responsável pela propagação de magia obscura na aldeia, todas essas '
+      'missões o incriminam para \na Corte Real.{}'.format(cores['cor_fala'], cores['limpa']))
+time.sleep(15)
+print('{}{}: E por que você quer me incriminar? Eu nem te conheço!{}'
+      .format(cores['cor_fala'], nome.upper(), cores['limpa']))
+time.sleep(5)
+print('{}MAGO: Bem, essa é fácil de responder. Simplesmente porque eu precisava de um bode expiatório, e qualquer '
+      '\naventureiro que eu achasse na taverna local serviria para isso, até porque ninguém é idiota o suficiente'
+      ' para \nacreditar em um velho qualquer, somente um novato como você.{}'
+      .format(cores['cor_fala'], cores['limpa']))
+time.sleep(10)
+print('{}{}: E o que pretende fazer com a princesa? Vai pedir ouro para o resgate? Sabe que o exército real vai '
+      '\ndizimá-lo quando souberem a verdade!{}'.format(cores['cor_fala'], nome.upper(), cores['limpa']))
+time.sleep(10)
+print('{}MAGO: Isso é verdade. Aliás, seria se eles estivessem me procurando, quando na verdade o que eles buscam é'
+      ' o \nsequestrador da princesa que, também, roubou a {}, arma que você carrega há um bom tempo, o \nque significa'
+      ' que o exército já está te perseguindo.{}'.format(cores['cor_fala'], arma, cores['limpa']))
+time.sleep(10)
+print('{}MAGO: Já em relação à princesa, você não sabe, mas ela é uma curandeira poderosa do reino de Uris. O  que '
+      'eu \nquero dela é seu poder, e estou prestes a conseguir isso. Após estudar anos a magia obscura, descobri '
+      '\nfinalmente como roubar toda a energia de um ser vivo para mim, e é isso o que vai acontecer com a mais '
+      '\npoderosa curandeira dos Cinco Reinos.{}'.format(cores['cor_fala'], cores['limpa']))
+time.sleep(10)
+print('{}{}: Você só esqueceu que eu também sei lutar, Mago. Agora prepare-se para seu fim!{}'
+      .format(cores['cor_fala'], nome.upper(), cores['limpa']))
+time.sleep(5)
+print('{}MAGO: Quero ver o que um simples aventureiro é capaz de fazer!{}'.format(cores['cor_fala'], cores['limpa']))
+#==============CHECKPOINT==================
+time.sleep(3)
+print('---' * 20)
+checkFinal = 0
+print('CHECKPOINT CRIADO!')
+pocoesCheck = pocoes
+mixer.music.stop()
+mixer.music.load('músicas rpg/Batalha final.mp3')
+mixer.music.set_volume(0.4)
+mixer.music.play(-1)
+#=============BATALHA FINAL================
+while checkFinal == 0:
+    print('---' * 20)
+    time.sleep(3)
+    print('{}BATALHA COMEÇANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+    time.sleep(5)
+    print('---' * 20)
+    lacaiosVivos = 0 #Quantidade de lacaios vivos
+    inimigoFinal = 0 #Escolha do alvo
+    lacaioValidador = 0 #Valida o uso da habilidade de sumonar
+    vidatotal = 20
+    pocoes = pocoesCheck
+    vidaMago = 40
+    vidaLacaioSolar = 0
+    vidaLacaioLunar = 0
+    while vidaMago > 0 and vidatotal > 0:
+        if lacaiosVivos > 0:
+            loopEscolha = 0
+            while loopEscolha == 0:
+                print('Escolha sua ação:\n{}1) Atacar Mago\n2) Atacar Lacaio Solar\n3) Atacar Lacaio Lunar'
+                      .format(cores['cor_esc']))
+                inimigoFinal = int(input('Digite qual a ação desejada: {}'.format(cores['limpa'])))
+                if inimigoFinal == 2 and vidaLacaioSolar <= 0 or inimigoFinal == 3 and vidaLacaioLunar <= 0:
+                    print('Você já matou este inimigo.')
+                    time.sleep(3)
+                    print('---' * 20)
+                else:
+                    loopEscolha = 1
+            print('---' * 20)
+        else:
+            inimigoFinal = 1
+        d8 = random.randint(1, 8)
+        d6 = random.randint(1, 6)
+        d4 = random.randint(1, 4)
+        # ESCOLHA DE QUAL ARMA UTILIZAR
+        print('{}{}. {}Poções de cura restantes: {}'
+              .format(cores['cor_esc'],menuAtaque, cores['cor_pocoes'], pocoes))
+        escAtaque = int(input('{}Digite o número da arma desejada: {}'
+                .format(cores['cor_esc'], cores['limpa'])))
+        # =============ATAQUE COM ESPADA============
+        if escAtaque == 1:
+            print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+            time.sleep(3)
+            dano = d6 + forca
+            if inimigoFinal == 1:
+                vidaMago = vidaMago - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou sua espada contra o Mago, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, forca, cores['cor_vidaOp'], vidaMago, cores['limpa']))
+            if inimigoFinal == 2:
+                vidaLacaioSolar = vidaLacaioSolar - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou sua espada contra o Lacaio Solar, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, forca, cores['cor_vidaOp'], vidaLacaioSolar, cores['limpa']))
+                if vidaLacaioSolar <= 0:
+                    lacaiosVivos = lacaiosVivos - 1
+            if inimigoFinal == 3:
+                vidaLacaioLunar = vidaLacaioLunar - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou sua espada contra o Lacaio Lunar, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, forca, cores['cor_vidaOp'], vidaLacaioLunar, cores['limpa']))
+                if vidaLacaioLunar <= 0:
+                    lacaiosVivos = lacaiosVivos - 1
+        # =============ATAQUE COM ADAGA============
+        if escAtaque == 2:
+            print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+            time.sleep(3)
+            dano = d6 + destreza
+            if inimigoFinal == 1:
+                vidaMago = vidaMago - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou sua adaga contra o Mago, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, forca, cores['cor_vidaOp'], vidaMago, cores['limpa']))
+            if inimigoFinal == 2:
+                vidaLacaioSolar = vidaLacaioSolar - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou sua adaga contra o Lacaio Solar, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, forca, cores['cor_vidaOp'], vidaLacaioSolar, cores['limpa']))
+                if vidaLacaioSolar <= 0:
+                    lacaiosVivos = lacaiosVivos - 1
+            if inimigoFinal == 3:
+                vidaLacaioLunar = vidaLacaioLunar - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou sua adaga contra o Lacaio Lunar, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, forca, cores['cor_vidaOp'], vidaLacaioLunar, cores['limpa']))
+                if vidaLacaioLunar <= 0:
+                    lacaiosVivos = lacaiosVivos - 1
+        # =============ATAQUE COM ARCO============
+        if escAtaque == 3:
+            print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+            time.sleep(3)
+            dano = d6 + longaD
+            if inimigoFinal == 1:
+                vidaMago = vidaMago - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou seu arco contra o Mago, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, longaD, cores['cor_vidaOp'],vidaMago, cores['limpa']))
+            if inimigoFinal == 2:
+                vidaLacaioSolar = vidaLacaioSolar - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou seu arco contra o Lacaio Solar, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, forca, cores['cor_vidaOp'],vidaLacaioSolar, cores['limpa']))
+                if vidaLacaioSolar <= 0:
+                    lacaiosVivos = lacaiosVivos - 1
+            if inimigoFinal == 3:
+                vidaLacaioLunar = vidaLacaioLunar - dano
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você usou seu arco contra o Lacaio Lunar, causando {} + {} de dano contra o '
+                      'adversário. {}Vida do oponente: {}{}'
+                      .format(d6, forca, cores['cor_vidaOp'], vidaLacaioLunar, cores['limpa']))
+                if vidaLacaioLunar <= 0:
+                    lacaiosVivos = lacaiosVivos - 1
+        # ==============ARMAS ESPECIAIS ============
+        # ESPADA FLAMEJANTE
+        if escAtaque == 4 and arma == 'espada flamejante':
+            print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+            time.sleep(3)
+            dano = d6 + forca + d4
+            if inimigoFinal == 1:
+                vidaMago = vidaMago - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('Você rolou 1d4 e tirou {}'.format(d4))
+                time.sleep(2)
+                print('Você usou sua espada flamejante contra o Mago, causando {} + {} + {}'
+                      ' de dano contra o adversário. {}Vida do \noponente: {}{}'
+                      .format(d6, forca, d4, cores['cor_vidaOp'], vidaMago, cores['limpa']))
+            if inimigoFinal == 2:
+                vidaLacaioSolar = vidaLacaioSolar - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('Você rolou 1d4 e tirou {}'.format(d4))
+                time.sleep(2)
+                print('Você usou sua espada flamejante contra o Lacaio Solar, causando {} + {} + {}'
+                      ' de dano contra o adversário. {}Vida do \noponente: {}{}'
+                      .format(d6, forca, d4, cores['cor_vidaOp'], vidaLacaioSolar, cores['limpa']))
+                if vidaLacaioSolar <= 0:
+                    lacaiosVivos = lacaiosVivos - 1
+            if inimigoFinal == 3:
+                vidaLacaioLunar = vidaLacaioLunar - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('Você rolou 1d4 e tirou {}'.format(d4))
+                time.sleep(2)
+                print('Você usou sua espada flamejante contra o Lacaio Lunar, causando {} + {} + {}'
+                      ' de dano contra o adversário. {}Vida do \noponente: {}{}'
+                      .format(d6, forca, d4, cores['cor_vidaOp'], vidaLacaioLunar, cores['limpa']))
+                if vidaLacaioLunar <= 0:
+                    lacaiosVivos = lacaiosVivos - 1
+        # =================ADAGA DAS TREVAS===================
+        if escAtaque == 4 and arma == 'adaga obscura':
+            print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+            time.sleep(3)
+            dano = d6 + forca + d4
+            if inimigoFinal == 1:
+                vidaMago = vidaMago - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('Você rolou 1d4 e tirou {}'.format(d4))
+                time.sleep(2)
+                print('Você usou sua adaga obscura contra o Mago, causando {} + {} + {}'
+                      ' de dano contra o adversário. {}Vida do \noponente: {}{}'
+                      .format(d6, forca, d4, cores['cor_vidaOp'], vidaMago, cores['limpa']))
+            if inimigoFinal == 2:
+                vidaLacaioSolar = vidaLacaioSolar - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('Você rolou 1d4 e tirou {}'.format(d4))
+                time.sleep(2)
+                print('Você usou sua adaga obscura contra o Lacaio Solar, causando {} + {} + {}'
+                      ' de dano contra o adversário. {}Vida do \noponente: {}{}'
+                      .format(d6, forca, d4, cores['cor_vidaOp'], vidaLacaioSolar, cores['limpa']))
+                if vidaLacaioSolar <= 0:
+                    lacaiosVivos = lacaiosVivos - 1
+            if inimigoFinal == 3:
+                vidaLacaioLunar = vidaLacaioLunar - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('Você rolou 1d4 e tirou {}'.format(d4))
+                time.sleep(2)
+                print('Você usou sua adaga obscura contra o Lacaio Lunar, causando {} + {} + {}'
+                      ' de dano contra o adversário. {}Vida do \noponente: {}{}'
+                      .format(d6, forca, d4, cores['cor_vidaOp'], vidaLacaioLunar, cores['limpa']))
+                if vidaLacaioLunar <= 0:
+                    lacaiosVivos = lacaiosVivos - 1
+        # =================ARCO ROSA=============
+        if escAtaque == 4 and arma == 'arco rosa':
+            print('{}ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+            time.sleep(3)
+            dano = d6 + forca + d8
+            if inimigoFinal == 1:
+                vidaMago = vidaMago - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('O arco rosa tem mais 1d8 contra magia escura.')
+                time.sleep(2)
+                print('Você rolou 1d8 e tirou {}'.format(d8))
+                time.sleep(2)
+                print('Você usou seu arco rosa contra o Mago, causando {} + {} + {}'
+                      ' de dano contra o adversário. {}Vida do \noponente: {}{}'
+                      .format(d6, forca, d8, cores['cor_vidaOp'], vidaMago, cores['limpa']))
+            if inimigoFinal == 2:
+                vidaLacaioSolar = vidaLacaioSolar - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('O arco rosa tem mais 1d8 contra magia escura.')
+                time.sleep(2)
+                print('Você rolou 1d8 e tirou {}'.format(d8))
+                time.sleep(2)
+                print('Você usou seu arco rosa contra o Lacaio Solar, causando {} + {} + {}'
+                      ' de dano contra o adversário. {}Vida do \noponente: {}{}'
+                      .format(d6, forca, d8, cores['cor_vidaOp'], vidaLacaioSolar, cores['limpa']))
+                if vidaLacaioSolar <= 0:
+                    lacaiosVivos = lacaiosVivos - 1
+            if inimigoFinal == 3:
+                vidaLacaioLunar = vidaLacaioLunar - dano
+                print('Você rolou 1d6 e tirou {}'.format(d6))
+                time.sleep(2)
+                print('O arco rosa tem mais 1d8 contra magia escura.')
+                time.sleep(2)
+                print('Você rolou 1d8 e tirou {}'.format(d8))
+                time.sleep(2)
+                print('Você usou seu arco rosa contra o Lacaio Lunar, causando {} + {} + {}'
+                      ' de dano contra o adversário. {}Vida do \noponente: {}{}'
+                      .format(d6, forca, d8, cores['cor_vidaOp'], vidaLacaioLunar, cores['limpa']))
+                if vidaLacaioLunar <= 0:
+                    lacaiosVivos = lacaiosVivos - 1
+        # ===============POÇÃO DE VIDA=====================
+        if escAtaque == 5:
+            if pocoes > 0:
+                d6 = random.randint(1, 6)
+                vidatotal = vidatotal + d6
+                if vidatotal > 20:
+                    vidatotal = 20
+                print('Você rolou 1d6 e tirou {}.'.format(d6))
+                time.sleep(2)
+                print('Você toma uma poção da cura e recupera +{} de pontos de vida. {}Vida total: '
+                      '{}{}'.format(d6, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+                time.sleep(3)
+                pocoes = pocoes - 1
+                print('{}Pocões de cura restantes: {}{}'
+                      .format(cores['cor_pocoes'], pocoes, cores['cor_pocoes']))
+                print('---' * 20)
+            else:
+                print('Suas poções de cura acabaram.')
+        # ==============CONTRA ATAQUE DO MAGO===============
+        if escAtaque != 5 and vidaMago > 0:
+            time.sleep(2)
+            print('---' * 20)
+            print('Agora é hora do contra-ataque do Mago!')
+            time.sleep(3)
+            if lacaiosVivos == 0 and lacaioValidador == 0:
+                ataqueMago = random.randint(1, 4)
+            else:
+                ataqueMago = random.randint(1, 2)
+            if ataqueMago == 1 and vidatotal > 0:
+                print('O Mago prepara um Raio Solar!')
+                time.sleep(3)
+                print('{}MAGO ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                d8 = random.randint(1, 8)
+                dano = d8
+                vidatotal = vidatotal - dano
+                print('O Mago rola 1d8 e tira {}.'.format(d8))
+                time.sleep(3)
+                print('Você tomou {} de dano radiante! {}Vida restante: {}{}'
+                      .format(dano, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+            if ataqueMago == 2 and vidatotal > 0:
+                print('O Mago prepara um Raio Lunar!')
+                time.sleep(3)
+                print('{}MAGO ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                d8 = random.randint(1, 8)
+                dano = d8
+                vidatotal = vidatotal - dano
+                print('O Mago rola 1d8 e tira {}.'.format(d8))
+                time.sleep(3)
+                print('Você tomou {} de dano obscuro! {}Vida restante: {}{}'
+                      .format(dano, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+            if ataqueMago == 3 or ataqueMago == 4:
+                print('O Mago sumona dois lacaios, um Solar e outro Lunar!')
+                time.sleep(3)
+                vidaLacaioSolar = 5
+                vidaLacaioLunar = 5
+                lacaiosVivos = 2
+                lacaioValidador = 2
+            if vidaLacaioSolar > 0 and vidatotal > 0:
+                print('O Lacaio Solar prepara uma Bola Radiante!')
+                time.sleep(3)
+                print('{}LACAIO SOLAR ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                d4 = random.randint(1, 4)
+                dano = d4
+                vidatotal = vidatotal - dano
+                print('O Lacaio Solar rolou 1d4 e tirou {}.'.format(d4))
+                time.sleep(3)
+                print('Você tomou {} de dano! {}Vida restante {}{}'
+                      .format(dano, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+                time.sleep(3)
+            if vidaLacaioLunar > 0 and vidatotal > 0:
+                print('O Lacaio Lunar prepara uma Bola Escura!')
+                time.sleep(3)
+                print('{}LACAIO LUNAR ATACANDO!{}'.format(cores['cor_ataque'],cores['limpa']))
+                time.sleep(3)
+                d4 = random.randint(1, 4)
+                dano = d4
+                vidatotal = vidatotal - dano
+                print('O Lacaio Lunar rolou 1d4 e tirou {}.'.format(d4))
+                time.sleep(3)
+                print('Você tomou {} de dano! {}Vida restante {}{}'
+                      .format(dano, cores['cor_vidatotal'], vidatotal, cores['limpa']))
+                time.sleep(3)
+            print('---' * 20)
+            if vidatotal <= 0:
+                print('Você morreu! Boa sorte na próxima tentativa.')
+                time.sleep(3)
+                print('Voltando ao checkpoint.')
+                time.sleep(3)
+            if lacaiosVivos == 0 and lacaioValidador > 0:
+                lacaioValidador = lacaioValidador - 1
+        if vidaMago <= 0:
+            time.sleep(3)
+            checkFinal = 1
+            print('Você matou o Mago!')
+            time.sleep(3)
+            print('---' * 20)
+            time.sleep(3)
+mixer.music.stop()
+mixer.music.load('músicas rpg/música início.mp3')
+mixer.music.set_volume(0.4)
+mixer.music.play(-1)
+print('O Mago cai sem vida no chão. Você olha pra cima e a princesa continua desacordada.')
+time.sleep(4)
+print('Ao analisar a jaula onde a princesa está presa, você percebe que a corrente que a mantém suspensa no ar'
+      ' está \nacoplada a uma manivela perto do órgão.')
+time.sleep(6)
+print('Você desce a princesa e desperta-a.')
+time.sleep(4)
+print('{}{}: Ei, como você tá?{}'.format(cores['cor_fala'], nome.upper(), cores['limpa']))
+time.sleep(3)
+print('A princesa responde um pouco atordoada.')
+time.sleep(3)
+print('{}PRINCESA: Oi... Quem é você?{}'.format(cores['cor_fala'], cores['limpa']))
+time.sleep(3)
+print('{}{}: Meu nome é {} e recebi uma missão para vir resgatá-la. Você está segura agora.{}'
+      .format(cores['cor_fala'], nome.upper(), nome.title(), cores['limpa']))
+time.sleep(4)
+print('A princesa deixa escapar um sorriso sincero...')
+time.sleep(5)
+print('---' * 20)
+print('UMA SEMANA DEPOIS...')
+print('---' * 20)
+time.sleep(3)
+print('Você recebe o título de Águia do Reino, o maior reconhecimento do reino de Uris.')
+time.sleep(3)
+print('Além disso, você recebe 1000 moedas de ouro do rei e uma proposta de um cargo no exército real.')
+time.sleep(3)
+print('Você aceita fazer parte?\n{}1) Sim\n2) Não'.format(cores['cor_esc']))
+esc = int(input('Digite a sua escolha: {}'.format(cores['limpa'])))
+if esc == 1:
+    print('{}{}: Eu ficaria honrado de defendê-lo, senhor. Pode contar comigo!{}'
+          .format(cores['cor_fala'], nome.upper(), cores['limpa']))
+if esc == 2:
+    print('{}{}: Minha jornada continua, senhor. Tenho muito para desbravar ainda!{}'
+          .format(cores['cor_fala'], nome.upper(), cores['limpa']))
+time.sleep(3)
+print('{}REI: Fico feliz com sua escolha. Você tem um grande futuro pela frente!{}'
+      .format(cores['cor_fala'], cores['limpa']))
+time.sleep(3)
+print('{}{}: Obrigado!{}'.format(cores['cor_fala'], nome.upper(), cores['limpa']))
+time.sleep(3)
+print('.')
+time.sleep(1)
+print('.')
+time.sleep(1)
+print('.')
+time.sleep(1)
+print('A jornada continua...')
+time.sleep(3)
+print('---' * 20)
+print('Obrigado por jogar!')
+print('Criador: Diogo Almeida')
+print('Data: 25/05/2021')
+time.sleep(5)
+quit()
