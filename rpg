@@ -10,10 +10,6 @@ cores = {'limpa':'\033[m',
          'cor_pocoes':'\033[35m',
          'cor_fala':'\033[1m'}
 # Tela inicial e escolha da classe
-mixer.init()
-mixer.music.load('músicas rpg/música início.mp3')
-mixer.music.set_volume(0.2)
-mixer.music.play(-1)
 print('---' * 20)
 print('BEM VINDO AO MUNDO DE URIS')
 print('---' * 20)
@@ -88,10 +84,6 @@ while (tarefasCompletas < 3):
     if esc2 == 1:
         if caminhoGobblins == 0:
             #===========CONTROLE DE MÚSICA============
-            mixer.music.stop()
-            mixer.music.load('músicas rpg/caminho1.mp3')
-            mixer.music.set_volume(0.4)
-            mixer.music.play(-1)
             #INTRODUÇÃO
             print('---' * 20)
             print('Muito bem. Que comece a aventura dos Gobblins!')
@@ -374,10 +366,6 @@ while (tarefasCompletas < 3):
     if esc2 == 2:
         if caminhoAnciao == 0:
             #===========CONTROLE DE MÚSICA============
-            mixer.music.stop()
-            mixer.music.load('músicas rpg/caminho2.mp3')
-            mixer.music.set_volume(0.4)
-            mixer.music.play(-1)
             # INTRODUÇÃO
             print('Muito bem. Que comece a aventura do ancião!')
             time.sleep(3)
@@ -464,10 +452,6 @@ while (tarefasCompletas < 3):
     if esc2 == 3:
         if caminhoMinotauro == 0:
             #===========CONTROLE DE MÚSICA============
-            mixer.stop()
-            mixer.music.load('músicas rpg/caminho3.mp3')
-            mixer.music.set_volume(0.4)
-            mixer.music.play(-1)
             # INTRODUÇÃO
             print('Muito bem. Que comece a aventura do Minotauro!')
             time.sleep(3)
@@ -623,10 +607,6 @@ while (tarefasCompletas < 3):
         print('---' * 20)
 #=================AVENTURA FINAL - INTRODUÇÃO================================
 #===========CONTROLE DA MÚSICA========
-mixer.music.stop()
-mixer.music.load('músicas rpg/Missões finais.mp3')
-mixer.music.set_volume(0.3)
-mixer.music.play(-1)
 print('Muito bem! Você completou as 3 tarefas! Seus pontos de vida foram restaurados.')
 vidatotal = 15
 time.sleep(4)
@@ -950,30 +930,16 @@ if esc == 1:
     time.sleep(3)
     print('{}1) Greensleeves\n2) Kvothe and Auri\n3) Toss a Coin To Your Witcher'.format(cores['cor_esc']))
     esc = int(input('Escolha a música desejada: {}'.format(cores['limpa'])))
-    mixer.music.stop()
     d20 = random.randint(1,20)
     d20op = random.randint(1,20)
     print('Tocando...')
     if esc == 1:
-        mixer.music.load('músicas rpg/Greensleeves.mp3')
-        mixer.music.set_volume(0.5)
-        mixer.music.play()
         time.sleep(19)
     if esc == 2:
-        mixer.music.load('músicas rpg/Kvothe and Auri.mp3')
-        mixer.music.set_volume(0.5)
-        mixer.music.play()
         time.sleep(36)
     if esc == 3:
-        mixer.music.load('músicas rpg/Toss a coin to your witcher.mp3')
-        mixer.music.set_volume(0.5)
-        mixer.music.play()
         time.sleep(20)
     #=======CONTROLE DE MÚSICA========
-    mixer.music.stop()
-    mixer.music.load('músicas rpg/Missões finais.mp3')
-    mixer.music.set_volume(0.3)
-    mixer.music.play(-1)
     time.sleep(3)
     print('Você rola um d20 e tira {}.'.format(d20))
     time.sleep(3)
@@ -1342,10 +1308,6 @@ if esc == 2 or batalhaLadino == 1:
     print('---' * 20)
 #======================RESGATE DA PRINCESA======================
 #======CONTROLE DE MÚSICA=========
-mixer.music.stop()
-mixer.music.load('músicas rpg/dark library.mp3')
-mixer.music.set_volume(0.5)
-mixer.music.play(-1)
 print('Você está em frente do castelo de arte gótica, com imensas torres que aparentam querer fincar o céu '
       'cinzento. Você sente um pingo cair em sua testa e logo percebe que uma tempestade se aproxima.')
 time.sleep(7)
@@ -1447,10 +1409,6 @@ print('---' * 20)
 checkFinal = 0
 print('CHECKPOINT CRIADO!')
 pocoesCheck = pocoes
-mixer.music.stop()
-mixer.music.load('músicas rpg/Batalha final.mp3')
-mixer.music.set_volume(0.4)
-mixer.music.play(-1)
 #=============BATALHA FINAL================
 while checkFinal == 0:
     print('---' * 20)
@@ -1795,10 +1753,6 @@ while checkFinal == 0:
             time.sleep(3)
             print('---' * 20)
             time.sleep(3)
-mixer.music.stop()
-mixer.music.load('músicas rpg/música início.mp3')
-mixer.music.set_volume(0.4)
-mixer.music.play(-1)
 print('O Mago cai sem vida no chão. Você olha pra cima e a princesa continua desacordada.')
 time.sleep(4)
 print('Ao analisar a jaula onde a princesa está presa, você percebe que a corrente que a mantém suspensa no ar'
